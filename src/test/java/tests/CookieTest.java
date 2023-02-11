@@ -5,6 +5,9 @@ import io.restassured.response.Response;
 import lib.BaseTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CookieTest extends BaseTestCase {
@@ -12,15 +15,18 @@ public class CookieTest extends BaseTestCase {
     String cookie;
     String cookieWithParams;
     String[] cookie_params;
+    Date now;
 
     @BeforeEach
     public void getCookie(){
+        this.now = new Date();
         Response response = RestAssured
                 .get("https://playground.learnqa.ru/api/homework_cookie")
                 .andReturn();
         this.cookie = response.getCookies().toString();
         this.cookieWithParams = response.getHeaders().getValue("Set-Cookie");
         this.cookie_params = cookieWithParams.split("; ");
+        System.out.println(this.cookieWithParams);
     }
 
     @Test
@@ -40,10 +46,9 @@ public class CookieTest extends BaseTestCase {
     @Test
     public void testCookieExpireEmptyTest() throws InterruptedException {
 
-        // expires скачет, поэтому проверить его не получится, нужно четкое понимание алгоритма его скачков, чтобы проверить, что оно соответсвует ТЗ
+        // expires скачет, поэтому проверить его не получится, только если не обрезать секунды, и.б. минуты. Но опять же не проверить - кука не меняется
 
-//        Date now = new Date();
-//        long l = now.getTime()- 2678428*1000+17277*60*1000;
+//        long l = now.getTime()- 2678423*1000+17277*60*1000;
 //        Date expireDate = new Date(l);
 //        System.out.println("Сейчас " + now);
 //        System.out.println(expireDate);
