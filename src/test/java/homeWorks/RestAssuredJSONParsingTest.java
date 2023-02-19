@@ -17,11 +17,9 @@ public class RestAssuredJSONParsingTest {
         response.prettyPrint();
 
         System.out.println("Вторая часть задания - вывести текст второго сообщения:");
-//        Object messages = response.get("messages");
 
         ArrayList<Map<String,String>> messages = response.get("messages");
         Map<String,String> secondMessage = messages.get(1);
         System.out.println(secondMessage.get("message"));
-
     }
 }
