@@ -1,10 +1,10 @@
 package lib;
 
-
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import static org.hamcrest.Matchers.hasKey;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,5 +25,14 @@ public class BaseTestCase {
     protected int getIntFromJson(Response Response, String name) {
         Response.then().assertThat().body("$",hasKey(name));
         return Response.jsonPath().getInt(name);
+    }
+
+    protected Map<String,String> getUserAgentResponseParams(Response Response) {
+        Map<String,String> userAgentResponseParams = new HashMap<>();
+        userAgentResponseParams.put("platform", Response.jsonPath().get("platform"));
+        userAgentResponseParams.put("browser", Response.jsonPath().get("browser"));
+        userAgentResponseParams.put("device", Response.jsonPath().get("device"));
+
+        return userAgentResponseParams;
     }
 }
