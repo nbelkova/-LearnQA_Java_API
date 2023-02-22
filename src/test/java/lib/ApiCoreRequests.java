@@ -2,7 +2,9 @@ package lib;
 
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.RestAssured;
 import io.restassured.http.Header;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -43,5 +45,18 @@ public class ApiCoreRequests {
                 .body(authData)
                 .post(url)
                 .andReturn();
+    }
+    @Step("Create new user and take it's ID")
+    public int takeIDForNewUser() {
+        Map<String, String> userData = DataGenerator.getRegistrationData();
+
+        JsonPath responseCreateAuth = RestAssured
+                .given()
+                .body(userData)
+                .post("https://playground.learnqa.ru/ajax/api/user")
+                .jsonPath();
+
+        //        System.out.println(responseCreateAuth.getInt("id"));
+        return responseCreateAuth.getInt("id");
     }
 }
