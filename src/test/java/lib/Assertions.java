@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Assertions {
@@ -28,6 +29,36 @@ public class Assertions {
         String value = Response.jsonPath().getString(name);
         assertEquals(expectedValue, value, "JSON value is not equal to expected value");
     }
+    public static void assertResponseTextEquals(Response Response, String expectedAnswer){
+        assertEquals(
+                expectedAnswer,
+                Response.asString(),
+                "Response text isn't as expected"
+        );
+    }
+
+    public static void assertResponseCodeEquals(Response Response, int expectedStatusCode){
+        assertEquals(
+                expectedStatusCode,
+                Response.statusCode(),
+                "Response status code isn't as expected"
+        );
+    }
+
+    public static void assertJsonHasField(Response Response, String expectedFieldName){
+        Response.then().assertThat().body("$", hasKey(expectedFieldName));
+    }
+
+    public static void assertJsonHasNotField(Response Response, String unexpectedFieldName){
+        Response.then().assertThat().body("$", not(hasKey(unexpectedFieldName)));
+    }
+
+    public static void assertJsonHasFields(Response Response, String[] expectedFieldNames){
+        for (String expectedFieldName : expectedFieldNames){
+            Assertions.assertJsonHasField(Response,expectedFieldName);
+        }
+    }
+
     public static void userAgentsRightParams(String userAgent, Map<String,String> userAgentResponseParams) {
         if (userAgent.equals("Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30")){
             assertEquals("Mobile", userAgentResponseParams.get("platform"), "Не правильно указана платформа для UA: " + userAgent);
