@@ -128,7 +128,8 @@ public class UserRegistrationTest extends BaseTestCase {
                 .andReturn();
 
 //        System.out.println(responseCreateAuth.asString());
-        Assertions.assertResponseTextEquals(responseCreateAuth,"The following required params are missed: email, password, username, firstName, lastName");
+//        System.out.println(DataGenerator.getErrorMessageWithoutField(field));
+        Assertions.assertResponseTextEquals(responseCreateAuth,DataGenerator.getErrorMessageWithoutField(field));
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
     }
 }

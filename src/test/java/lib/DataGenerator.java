@@ -45,12 +45,28 @@ public class DataGenerator {
         Map<String, String> defaultValues = DataGenerator.getRegistrationData();
 
         Map<String, String> userData = new HashMap<>();
+                userData.put(field, defaultValues.put(field, ""));
+        return userData;
+    }
+
+    public static String getErrorMessageWithoutField(String field) {
+//        Map<String, String> defaultValues = DataGenerator.getRegistrationData();
+//
+//        Map<String, String> userData = new HashMap<>();
+//        userData.put(field, defaultValues.put(field, ""));
+        boolean firstParam = true;
+        String errorMessage = "The following required params are missed: ";
         String[] keys = {"email", "password", "username", "firstName", "lastName"};
-        for (String key : keys) {
-            if (key.equals(field)) {
-                userData.put(key, defaultValues.put(key, ""));
+        for (String key: keys) {
+            if (!key.equals(field)) {
+                if (firstParam) {
+                    errorMessage = errorMessage + key;
+                    firstParam = false;
+                } else {
+                    errorMessage = errorMessage + ", " + key;
+                }
             }
         }
-        return userData;
+        return errorMessage;
     }
 }
