@@ -61,7 +61,7 @@ public class UserGetTest extends BaseTestCase {
         String header = this.getHeader(responseGetAuth, "x-csrf-token");
         String cookie = this.getCookie(responseGetAuth, "auth_sid");
 
-        int id = apiCoreRequests.takeIDForNewUser();
+        int id = apiCoreRequests.createAndTakeIDForNewUser();
         Response responseOtherUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/" + id, header, cookie);
 
 //        System.out.println(responseOtherUserData.asString());

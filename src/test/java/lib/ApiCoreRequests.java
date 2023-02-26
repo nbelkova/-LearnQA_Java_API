@@ -47,7 +47,7 @@ public class ApiCoreRequests {
                 .andReturn();
     }
     @Step("Create new user and take it's ID")
-    public int takeIDForNewUser() {
+    public int createAndTakeIDForNewUser() {
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
         JsonPath responseCreateAuth = RestAssured
@@ -58,5 +58,16 @@ public class ApiCoreRequests {
 
         //        System.out.println(responseCreateAuth.getInt("id"));
         return responseCreateAuth.getInt("id");
+    }
+
+    @Step("Make a PUT-request on URL with token, auth cookie, body data ")
+    public Response makePutRequest(String url, String token, String cookie, Map<String, String> bodyData ) {
+        return given()
+                .filter(new AllureRestAssured())
+                .header(new Header("x-csrf-token", token))
+                .cookie("auth_sid", cookie)
+                .body(bodyData)
+                .put(url)
+                .andReturn();
     }
 }
