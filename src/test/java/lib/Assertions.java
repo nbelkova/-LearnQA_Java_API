@@ -1,7 +1,6 @@
 package lib;
 
 import io.restassured.response.Response;
-
 import java.util.Map;
 
 import static org.hamcrest.Matchers.hasKey;
@@ -56,6 +55,18 @@ public class Assertions {
     public static void assertJsonHasFields(Response Response, String[] expectedFieldNames){
         for (String expectedFieldName : expectedFieldNames){
             Assertions.assertJsonHasField(Response,expectedFieldName);
+        }
+    }
+
+    public static void assertDeleteResponse(Response Response, boolean ableDeletion){
+        if (!ableDeletion){
+        assertEquals("Please, do not delete test users with ID 1, 2, 3, 4 or 5.",
+                Response.asString(),
+                "Сообщение о неудачном удалении не получено");
+        } else {
+            assertEquals("User not found",
+                    Response.asString(),
+                    "Сообщение об удачном удалении не получено");
         }
     }
 
